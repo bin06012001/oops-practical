@@ -1,71 +1,134 @@
 #include<stdio.h>
-#include<string.h>
 
-typedef struct mobile_info
+
+#include<stdlib.h>
+int *stack, top = -1, CAPACITY;
+
+void push(int ele);
+int isfull();
+int pop();
+int isempty();
+void peek();
+void display();
+
+int main(void)
 {
-	char name[50];
-	int quan;
-	double price;
-} mob_data;
-mob_data read_info()
-{
-	mob_data a;
-	printf("\n ENTER THE MOBILE BRAND NAME : ");
-	scanf("%s",a.name);
-	printf("\n ENTER THE QUANTITY OF MOBILE : ");
-	scanf("%d",&(a.quan));
-	printf("\n ENTER THE PRICE OF EACH MOBILE : ");
-	scanf("%lf",&(a.price));
-	
-	return a;
+    int ch,item;
+    printf("Input Capacity of the stack: ");
+    scanf("%d", &CAPACITY);
+    stack = (int *)malloc(CAPACITY*sizeof(int));
+    while(1)
+    {
+        printf("1.push\n");
+        printf("2.pop\n");
+        printf("3.peek \n");
+        printf("4.display\n");
+        printf("5.Quit\n");
+
+        printf("Enter your choice :\n");
+        scanf("%d",&ch);
+
+        switch(ch)
+        {
+            case 1:
+                printf("Enter the element to push :\n");
+                scanf("%d",&item);
+                push(item);
+                break;
+            case 2:
+                item = pop();
+                if(item==0)
+                {
+                    printf("stack is underflow\n");
+                }
+                else
+                {
+                    printf("popped item : %d\n",item);
+                }
+                break;
+            case 3: peek();
+            break;
+            case 4: display();
+            break;
+            case 5: exit(0);
+            default:printf("Invalid input \n\n");
+
+        }
+    }
+
 }
 
-void display(mob_data b)
+void push(int ele)
 {
-	printf("\n\n MOBILE BRAND NAME : %s", b.name);
-	printf("\n STOCK IN HAND : %d ", b.quan);
-	printf("\n TOTAL COST OF INVENTORY (Rs) : %6.2lf",(b.price)*(b.quan));
-	
-	printf("\n");
+    if(isfull())
+    {
+        printf("Stack is overflow\n");
+    }
+    else
+    {
+        top++;
+        stack[top] = ele;
+        printf("%d pushed \n",ele);
+    }
 }
-
-int main()
+int isfull()
 {
-	printf("\n NAME - BINAY KUMAR LOHANI ");
-	
-	mob_data obj[100];
-	int ch, j=0;
-	
-	printf("\n 1. STORING \n\n 2. SEARCHING \n\n 3.EXIT");
-	while(1)
-	{
-		printf("\n ENTER YOUR CHOICE : ");
-		scanf("%d",&ch);
-		if(ch==1)
-		{
-			obj[j]=read_info();
-			j++;
-		}
-		else if(ch==2)
-		{
-			char s[50];
-			printf("\n ENTER THE NAME OF THE ITEM TO BE SEARCHED :");
-			scanf("%s",s);
-			
-			for(int i=0;obj[i].name!='\0';i++)	
-			if(strcmp(s,obj[i].name)==0)
-			{
-				display(obj[i]);
-				break;
-				}	}
-	
-	else
-	{
-		printf("\n\n EXIT ");
-		break;
+    if(top==CAPACITY-1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int pop()
+{
+    if(isempty())
+    {
+        return 0;
+    }
+    else
+    {
+        return stack[top--];
+    }
+}
+int isempty()
+{
+    if(top==-1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+void peek()
+{
+    if(isempty())
+    {
+        printf("stack is underflow\n");
+    }
+    else
+    {
+        printf("peek element :%d\n",stack[top]);
+    }
+}
+void display()
+{
+    if(isempty())
+    {
+        printf("stack is empty\n");
+    }
+    else
 	}
-
-	printf("\n");
-} 
-return 0;
+    {
+        int i;
+        printf("Stack elements are : \n");
+        for(i=0;i<=top;i++)
+        {
+            printf("%d \n",stack[i]);
+        }
+    }
 }
